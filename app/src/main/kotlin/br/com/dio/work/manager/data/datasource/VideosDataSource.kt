@@ -15,5 +15,7 @@ object VideosDataSource {
     private inline fun <reified  T> Gson.fromFile(assetManager: AssetManager, fileName: String): T {
         return fromJson(assetManager.open(fileName).bufferedReader(), object: TypeToken<T>() {}.type)
     }
+
+    fun getRandomVideo(): Video = list.random()
 }
 
