@@ -1,8 +1,10 @@
 package br.com.dio.work.manager.worker
 
 import android.content.Context
+import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.Worker
 import androidx.work.WorkerParameters
@@ -38,5 +40,20 @@ class NotificationWorker(
             OneTimeWorkRequestBuilder<NotificationWorker>()
                 .setInitialDelay(2, TimeUnit.MINUTES)
                 .build()
+
+        fun startPeriodic(context: Context) {
+            WorkManager.getInstance(context)
+                .enqueueUniquePeriodicWork(
+                    WORKER_NAME,
+                    ExistingPeriodicWorkPolicy.KEEP,
+                    createPeriodicRequest()
+                )
+        }
+
+        private fun createPeriodicRequest() =
+            PeriodicWorkRequestBuilder<NotificationWorker>(
+                15,
+                TimeUnit.MINUTES
+            ).build()
     }
 }
